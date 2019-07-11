@@ -8,10 +8,10 @@ import (
 	"os"
 )
 
-type CallerInfoType model.CallerInfo
+type callerInfoType model.CallerInfo
 
-func NewJSONRepository() *CallerInfoType {
-	return &CallerInfoType{}
+func NewJSONRepository() *callerInfoType {
+	return &callerInfoType{}
 }
 
 type JSONInterface interface {
@@ -28,7 +28,7 @@ type JSONInterface interface {
 }
 
 //read the JSON file
-func (callerinfo *CallerInfoType) ReadJSONFile() {
+func (callerinfo *callerInfoType) ReadJSONFile() {
 	if _, err := os.Stat("itemtrack.json"); os.IsNotExist(err) {
 		fmt.Println("file not present")
 		return
@@ -48,7 +48,7 @@ func (callerinfo *CallerInfoType) ReadJSONFile() {
 }
 
 //write the JSON file
-func (callerinfo *CallerInfoType) WriteJSONFile() {
+func (callerinfo *callerInfoType) WriteJSONFile() {
 	file, err := json.MarshalIndent(callerinfo, "", " ")
 	if err != nil {
 		fmt.Println("invalid data json not created ", err)
@@ -62,41 +62,41 @@ func (callerinfo *CallerInfoType) WriteJSONFile() {
 }
 
 //Get failureIds
-func (callerinfo *CallerInfoType) FailureId() []int {
+func (callerinfo *callerInfoType) FailureId() []int {
 	return callerinfo.FailureIds
 }
 
 //Set failureIds
-func (callerinfo *CallerInfoType) SetFailureId(requestID int) {
+func (callerinfo *callerInfoType) SetFailureId(requestID int) {
 	callerinfo.FailureIds = append(callerinfo.FailureIds, requestID)
 }
 
 //Get failureCnt
-func (callerinfo *CallerInfoType) FailureCnt() int {
+func (callerinfo *callerInfoType) FailureCnt() int {
 	return callerinfo.FailureCount
 }
 
 //Set failureCnt
-func (callerinfo *CallerInfoType) SetFailureCnt(failurecnt int) {
+func (callerinfo *callerInfoType) SetFailureCnt(failurecnt int) {
 	callerinfo.FailureCount = failurecnt
 }
 
 //Get ErrorCnt
-func (callerinfo *CallerInfoType) ErrorCnt() int {
+func (callerinfo *callerInfoType) ErrorCnt() int {
 	return callerinfo.ErrorCount
 }
 
 //Set ErrorCnt
-func (callerinfo *CallerInfoType) SetErrorCnt(errorcnt int) {
+func (callerinfo *callerInfoType) SetErrorCnt(errorcnt int) {
 	callerinfo.ErrorCount = errorcnt
 }
 
 //Get LastRequestId
-func (callerinfo *CallerInfoType) LastRequstID() int {
+func (callerinfo *callerInfoType) LastRequstID() int {
 	return callerinfo.LastRequestId
 }
 
 //Set LastRequestId
-func (callerinfo *CallerInfoType) SetLastRequstID(LastRequestId int) {
+func (callerinfo *callerInfoType) SetLastRequstID(LastRequestId int) {
 	callerinfo.LastRequestId = LastRequestId
 }

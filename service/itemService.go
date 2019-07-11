@@ -19,19 +19,19 @@ const (
 
 var gracefulStop = make(chan os.Signal)
 
-type ItemService struct {
+type itemService struct {
 	CallerJSONData repository.JSONInterface
 	ItemData       repository.ItemInterface
 	RequestID      int
 }
 
 //Set dependency
-func NewItemService(callerJSONData repository.JSONInterface, itemData repository.ItemInterface) *ItemService {
-	return &ItemService{callerJSONData, itemData, callerJSONData.LastRequstID()}
+func NewItemService(callerJSONData repository.JSONInterface, itemData repository.ItemInterface) *itemService {
+	return &itemService{callerJSONData, itemData, callerJSONData.LastRequstID()}
 }
 
 //invoke worker
-func (itemService *ItemService) InvokeWorker() {
+func (itemService *itemService) InvokeWorker() {
 	signal.Notify(gracefulStop, syscall.SIGTERM)
 	signal.Notify(gracefulStop, syscall.SIGINT)
 	for {
@@ -42,7 +42,7 @@ func (itemService *ItemService) InvokeWorker() {
 }
 
 //create 10 worker and pass requestID through channel
-func (itemService *ItemService) worker() {
+func (itemService *itemService) worker() {
 	var wg sync.WaitGroup
 	wg.Add(WORKER)
 	//when user gracefulStop program then wait until all goroutine close
@@ -79,8 +79,9 @@ func (itemService *ItemService) worker() {
 	}
 	wg.Wait()
 }
+
 //generate new requestID
-func (itemService *ItemService) generateReqID() int {
+func (itemService *itemService) generateReqID() int {
 	if itemService.RequestID == 0 {
 		itemService.RequestID = STARTINGPRODUCT
 		return itemService.RequestID
@@ -96,7 +97,7 @@ func (itemService *ItemService) generateReqID() int {
 }
 
 //update largest requestId
-func (itemService *ItemService) updateLastRequestID(requestID int) {
+func (itemService *itemService) updateLastRequestID(requestID int) {
 	if itemService.CallerJSONData.LastRequstID() < requestID {
 		itemService.CallerJSONData.SetLastRequstID(requestID)
 	}
@@ -104,7 +105,7 @@ func (itemService *ItemService) updateLastRequestID(requestID int) {
 }
 
 //print failure log and update the CallerJSONData
-func (itemService *ItemService) failureLog(errmessage string, requestID int) {
+func (itemService *itemService) failureLog(errmessage string, requestID int) {
 
 	itemService.CallerJSONData.SetFailureId(requestID)
 	failurecnt := itemService.CallerJSONData.FailureCnt()

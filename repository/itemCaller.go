@@ -10,10 +10,10 @@ import (
 	"sync"
 )
 
-type ItemRequest model.ItemRequest
+type itemRequest model.ItemRequest
 
-func NewItemRepository() *ItemRequest {
-	return &ItemRequest{}
+func NewItemRepository() *itemRequest {
+	return &itemRequest{}
 }
 
 type ItemInterface interface {
@@ -21,7 +21,7 @@ type ItemInterface interface {
 }
 
 // call the itemdetails api
-func (item *ItemRequest) Item(reqIDChan chan int, respItemChan chan model.ResponseChan, wg *sync.WaitGroup) {
+func (item *itemRequest) Item(reqIDChan chan int, respItemChan chan model.ResponseChan, wg *sync.WaitGroup) {
 	defer wg.Done()
 	var respItemdata model.ResponseChan
 	reqID := <-reqIDChan
